@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Service A: The TV Image Uploader
+  tv-uploader:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - tv_images:/app/uploads
+    restart: always
+    environment:
+      - PORT=3000
+
+  # Service B: The n8n Automation Engine
+  n8n:
+    image: n8nio/n8n:latest
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    restart: always
+    environment:
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - NODE_ENV=production
+
+volumes:
+  tv_images:
+  n8n_data:
